@@ -2,7 +2,7 @@
 # let's put in spec files
 
 class Card
-    attr_reader :suit, :rank
+    attr_accessor :suit, :rank
     def initialize(suit, rank)
         @suit = suit
         @rank = rank
@@ -10,24 +10,37 @@ class Card
 end
 
 RSpec.describe Card do
-    before do
-        @card = Card.new('Ace', 'Spades')
-    end
+    # before do
+    #     @card = Card.new('Ace', 'Spades')
+    # end
+    let(:card) { Card.new('Spades', 'Ace') }
+    let(:x) { 1+1 }
+    let(:y) { x + 10 }
 
-    it "has a rank" do
-        expect(@card.rank).to eq('Spades')
+    #let! - equivalent to before do, not lazy loaded
+
+    it "has a rank that can change" do
+        expect(card.rank).to eq('Ace')
+        card.rank = 'Queen' # uses cached card, not new instance
+        expect(card.rank).to eq('Queen')
     end
 
     it "has a suit" do
-        expect(@card.suit).to eq('Ace')
+        expect(card.suit).to eq('Spades')
+    end
+
+    it "does math" do
+        expect(x).to eq(2)
+        expect(y).to eq(12)
     end
 end
 
 # RSpec.describe "Card" do
     # before do
-        # @card = ...
-        # if you change this, all instances will need to be changed
-        # if you forget an instance, it will result to nil
+        # @card = @card = Card.new('Ace', 'Spades')
+        # potential issues
+            # if you change this, all instances will need to be changed
+            # if you forget an instance, it will result to
     # end
     # before(:example) do
     # end
